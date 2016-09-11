@@ -60,15 +60,15 @@
 #' independent variable on the dependent variable.}
 #' \item{robust}{a logical indicating whether the effects were estimated
 #' robustly.}
-#' \item{fitYX}{an object of class \code{"\link[stats]{lm}"} containing the
-#' estimation results from the regression of the dependent variable on the
-#' independent variable (only \code{"regFitMediation"}).}
 #' \item{fitMX}{an object of class \code{"\link[stats]{lm}"} containing the
 #' estimation results from the regression of the proposed mediator variable
 #' on the independent variable (only \code{"regFitMediation"}).}
 #' \item{fitYMX}{an object of class \code{"\link[stats]{lm}"} containing the
 #' estimation results from the regression of the dependent variable on the
 #' proposed mediator and independent variables (only \code{"regFitMediation"}).}
+#' \item{fitYX}{an object of class \code{"\link[stats]{lm}"} containing the
+#' estimation results from the regression of the dependent variable on the
+#' independent variable (only \code{"regFitMediation"}).}
 #' \item{cov}{an object of class \code{"\link{covHuber}"} or
 #' \code{"\link{covML}"} containing the covariance matrix estimates (only
 #' \code{"covFitMediation"}).}
