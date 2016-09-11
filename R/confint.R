@@ -72,44 +72,6 @@ confint.sobelTestMediation <- function(object, parm = NULL, level = 0.95, ...) {
 }
 
 
-# ## @rdname confint.testMediation
-# ## @method confint regFitMediation
-# ## @export
-#
-# confint.regFitMediation <- function(object, parm = NULL, level = 0.95, ...) {
-#   # extract confidence intervals and combine into one matrix
-#   ci <- rbind(confint(object$fitMX, parm=2, level=level),
-#               confint(object$fitYMX, parm=2:3, level=level),
-#               confint(object$fitYX, parm=2, level=level))
-#   rownames(ci) <- c("a", "b", "c", "c'")
-#   # if requested, take subset of effects
-#   if(!is.null(parm)) ci <- ci[parm, , drop=FALSE]
-#   ci
-# }
-#
-#
-# ## @rdname confint.testMediation
-# ## @method confint covFitMediation
-# ## @export
-#
-# confint.covFitMediation <- function(object, parm = NULL, level = 0.95, ...) {
-#   # initializations
-#   alpha <- 1 - level
-#   # compute standard errors
-#   summary <- summary(object)
-#   # compute confidence intervals and combine into one matrix
-#   ci <- rbind(confintZ(object$a, summary$a[1,2], level=level),
-#               confintZ(object$b, summary$b[1,2], level=level),
-#               confintZ(object$c, summary$c[1,2], level=level),
-#               confintZ(object$cPrime, summary$cPrime[1,2], level=level))
-#   cn <- paste(format(100 * c(alpha/2, 1-alpha/2), trim=TRUE), "%")
-#   dimnames(ci) <- list(c("a", "b", "c", "c'"), cn)
-#   # if requested, take subset of effects
-#   if(!is.null(parm)) ci <- ci[parm, , drop=FALSE]
-#   ci
-# }
-
-
 ## internal function to compute confidence intervals for estimated effects
 
 getConfint <- function(object, parm, level = 0.95, ...) UseMethod("getConfint")
@@ -152,26 +114,12 @@ getConfint.regFitMediation <- function(object, parm = NULL, level = 0.95,
     confintMX <- confint(object$fitMX, parm=2, level=level)
     confintYMX <- confint(object$fitYMX, parm=2:3, level=level)
     # compute confidence interval for total effect
-    if(object$robust) {
-      # compute the variance estimate of c' = a*b + c assuming independence
-      summaryYMX <- summary(object$fitYMX)
-      sCPrime <- sqrt(sAB^2 + summaryYMX$coefficients[3, 2]^2)
-      # compute the degrees of freedom
-      # m ~ x + covariates: 2 + # covariates
-      # y ~ m + x + covariates: 3 + # covariates
-      # y ~ x + covariates: 2 + # covariates
-      n <- nobs(object$fitYMX)
-      df <- max(1, n - 7 - 3*length(object$covariates))
-      # compute confidence interval
-      confintYX <- object$cPrime + qt(c(alpha/2, 1-alpha/2), df=df) * sCPrime
-    } else {
-      # extract confidence interval from regression model
-      confintYX <- confint(object$fitYX, parm=2, level=level)
-    }
+    # extract confidence interval from regression model
+    confintYX <- confint(object$fitYX, parm=2, level=level)
     ci <- rbind(confintMX, confintYMX, confintYX)
     rownames(ci) <- c("a", "b", "c", "c'")
   } else {
-    # compute means and standard erroers from bootstrap replicates
+    # compute means and standard errors from bootstrap replicates
     estimates <- colMeans(boot$t[, 2:5], na.rm=TRUE)
     se <- apply(boot$t[, 2:5], 2, sd, na.rm=TRUE)
     # compute confidence intervals and combine into one matrix

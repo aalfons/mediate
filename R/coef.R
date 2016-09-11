@@ -15,6 +15,9 @@
 #' model fit.
 #' @param parm  an integer, character or logical vector specifying the
 #' coefficients to be extracted, or \code{NULL} to extract all coefficients.
+#' @param type  a character string specifying whether to extract the means
+#' of the bootstrap distribution (\code{"boot"}; the default), or the
+#' coefficient estimates based on the full data set (\code{"data"}).
 #' @param \dots  additional arguments are currently ignored.
 #'
 #' @return A numeric vetor containing the requested coefficients.
