@@ -93,7 +93,6 @@ plotMediation.list <- function(object, data, method = c("dot", "density"),
 plotMediation.default <- function(object, mapping = attr(object, "mapping"),
                                   facets = attr(object, "facets"), ...) {
   # create selected plot
-  print(attributes(object))
   if(attr(object, "method") == "dot") dotPlot(object, mapping, facets, ...)
   else densityPlot(object, mapping, ...)
 }
